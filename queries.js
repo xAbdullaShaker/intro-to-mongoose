@@ -1,21 +1,42 @@
-/*-------------------------------- Starter Code --------------------------------*/
+/* eslint-disable no-console */
+/* -------------------------------- Starter Code --------------------------------*/
 
 const dotenv = require('dotenv');
+
 dotenv.config();
 const mongoose = require('mongoose');
+const Todo = require('./models/todo');
 
-const connect = async () => {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to MongoDB');
-    await runQueries()
-    await mongoose.disconnect();
-    console.log('Disconnected from MongoDB');
-    process.exit();
+const createTodo = async () => {
+  const formData = {
+    text: 'New Todo',
+    isComplete: false,
+  };
+
+  const newTodo = await Todo.create(formData);
+  console.log(newTodo);
 };
 
 const runQueries = async () => {
-  console.log('Queries running.')
+  console.log('Queries running.');
+  await createTodo();
 };
 
-connect()
-/*-------------------------------- Query Functions --------------------------------*/
+const connect = async () => {
+  await mongoose.connect(process.env.MONGODB_URI);
+
+  console.log('Connected to MongoDB');
+
+  await runQueries();
+
+  await mongoose.disconnect();
+
+  console.log('Disconnected from MongoDB');
+  process.exit();
+};
+
+connect();
+/* -------------------------------- Query Functions --------------------------------*/
+
+
+
